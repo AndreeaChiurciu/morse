@@ -1,5 +1,4 @@
-import sys
-import unittest
+import argparse, sys, unittest
 
 CODE = {'A': '.-',     'B': '-...',   'C': '-.-.', 
         'D': '-..',    'E': '.',      'F': '..-.',
@@ -52,13 +51,25 @@ def encodeToMorse(message):
 	return encodedMessage 
 
 def main():
-    
-    msg = raw_input('MESSAGE: ')
-    
-    if not verify(msg):
-		sys.exit('Error message cannot be translated to Morse Code')
 
-    print encodeToMorse(msg)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-o', help='outputfile', nargs= 1, required=True)
+    parser.add_argument('-i', help='inputfile', nargs='+', required=True)
+    parser.add_argument('-a', action='store_true', default=False,
+                    dest='ASCII2MORSE',help='ASCII -> Morse')
+    parser.add_argument('-m', action='store_true', default=False,
+                    dest='MORSE2ASCII', help='Morse -> ASCII')
+    parser.add_argument('--version', action='version', version='0.1')
+    args = parser.parse_args()
+
+    if args.ASCII2MORSE :
+       msg = raw_input('ASCII to Morse conversion: ')
+       if not verify(msg):
+          sys.exit('Error message cannot be translated to Morse Code')
+       print encodeToMorse(msg)
+    else :
+       msg = raw_input('Morse to ASCII conversion: ')
+       print decodeMorse(msg)
 
 class MyTest(unittest.TestCase):
     # Ref issue #9
