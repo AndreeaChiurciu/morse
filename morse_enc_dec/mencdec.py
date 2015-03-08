@@ -51,8 +51,15 @@ def encodeToMorse(message):
 		encodedMessage += CODE[char.upper()] + " "
 	return encodedMessage 
 
-def main():
-    
+def main(argv):
+    import getopt
+
+    try:
+        opts, args = getopt.getopt(sys.argv, 'o:i:')
+    except getopt.GetoptError:
+		sys.stderr.write('Usage ' + sys.argv[0] + '[-a | -m] [ -i inputfile ] [ -o outfile ] \n')
+		sys.exit(1)
+
     msg = raw_input('MESSAGE: ')
     
     if not verify(msg):
@@ -75,5 +82,5 @@ class MyTest(unittest.TestCase):
 
         
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
     #unittest.main()
